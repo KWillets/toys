@@ -120,9 +120,10 @@ bool test_strcmp1() {
             buffer2[l2] = 0;
 
             const int result   = avx512f_strcmp(buffer1, buffer2);
+            const int resultbw   = avx512bw_strcmp(buffer1, buffer2);
             const int expected = strcmp(buffer1, buffer2);
-            if (result != expected) {
-                printf("failed: result=%d, expected=%d\n", result, expected);
+            if (result != expected || resultbw != expected) {
+	      printf("failed: result=%d, resultbw = %d, expected=%d\n", result, resultbw, expected);
                 return false;
             }
 
@@ -151,9 +152,10 @@ bool test_strcmp2() {
                 buffer2[l2] = 0;
 
                 const int result   = avx512f_strcmp(buffer1, buffer2);
+		const int resultbw   = avx512bw_strcmp(buffer1, buffer2);
                 const int expected = strcmp(buffer1, buffer2);
-                if (result != expected) {
-                    printf("failed: result=%d, expected=%d\n", result, expected);
+		if (result != expected || resultbw != expected) {
+		  printf("failed: result=%d, resultbw = %d, expected=%d\n", result, resultbw, expected);
                     return false;
                 }
 

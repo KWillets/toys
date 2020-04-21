@@ -93,4 +93,5 @@ int main() {
 
     test.measure("std::strcmp", strcmp);
     test.measure("AVX512F", avx512f_strcmp);
+    test.measure("AVX512BW", avx512bw_strcmp);
 }

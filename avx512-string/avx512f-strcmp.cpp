@@ -60,3 +60,46 @@ int avx512f_strcmp(const char* s1, const char* s2) {
 
 }
 
+const __m512i v00  = _mm512_set1_epi8(0);
+
+int avx512bw_strcmp(const char* s1, const char* s2) {
+
+
+    char* c1 = const_cast<char*>(s1);
+    char* c2 = const_cast<char*>(s2);
+
+    __mmask64 zero1;
+    __mmask64 diff;
+    __mmask64 either;
+
+    while (true) {
+
+      const __m512i v1 = _mm512_loadu_si512(c1);
+      const __m512i v2 = _mm512_loadu_si512(c2);
+
+      zero1 = _mm512_testn_epi8_mask(v1,v1);
+      //zero1 = _mm512_cmpeq_epi8_mask(v1,v00);
+      diff  = _mm512_cmpneq_epi8_mask(v1, v2);
+
+      either = _kor_mask64(zero1, diff);
+
+      if (either) {
+	break;
+      }
+
+      c1 += 64;
+      c2 += 64;
+    }
+
+    const size_t n = __builtin_ctzl(either);
+
+    int a = c1[n];
+    int b = c2[n];
+
+    if (a != b || !a) {
+      return a - b;
+    }
+
+    assert(false);
+
+  }

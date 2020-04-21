@@ -1,6 +1,6 @@
 .PHONY: all clean speed
 
-FLAGS=-std=c++14 -mavx512f -O3 -Wall -Wextra -pedantic
+FLAGS=-std=c++14 -mavx512bw -O3 -Wall -Wextra -pedantic
 PERFTESTS=speed_strlen speed_strchr speed_strrchr speed_strcmp
 DEPS=common.h
 
