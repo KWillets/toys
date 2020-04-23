@@ -81,15 +81,15 @@ int avx512bw_strcmp(const char* s1, const char* s2) {
       //zero1 = _mm512_cmpeq_epi8_mask(v1,v00);
       diff  = _mm512_cmpneq_epi8_mask(v1, v2);
 
-      either = _kor_mask64(zero1, diff);
-
-      if (either) {
+      if (!_kortestz_mask64_u8(zero1, diff)) {
 	break;
       }
 
       c1 += 64;
       c2 += 64;
     }
+
+    either = _kor_mask64(zero1, diff);
 
     const size_t n = __builtin_ctzl(either);
 
